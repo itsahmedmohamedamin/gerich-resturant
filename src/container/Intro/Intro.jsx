@@ -1,13 +1,40 @@
-import React, { useState } from 'react';
-
+import React, { useState, useRef } from 'react';
+import { BsFillPlayFill, BsFillPauseFill } from 'react-icons/bs'; // Correct import
+import { meal } from '../../constants';
 import './Intro.css';
 
 const Intro = () => {
-  
+  const [playVideo, setPlayVideo] = useState(true);
+  const vidRef = useRef();
 
-  return ( 
-    <div className='app__video '>
-      Test
+  const handleVideo = () => {
+    setPlayVideo((prevPlayVideo) => !prevPlayVideo);
+    if (playVideo) {
+      vidRef.current.pause();
+    } else {
+      vidRef.current.play();
+    }
+  };
+
+  return (
+    <div className='app__video'>
+      <video
+        ref={vidRef}
+        src={meal}
+        type='video/mp4'
+        loop
+        controls={false}
+        muted
+      />
+      <div className='app__video-overlay flex__center'>
+        <div className='app__video-overlay_circle flex__center' onClick={handleVideo}>
+          {playVideo ? (
+            <BsFillPauseFill color='#fff' fontSize={30} /> // Changed icon name
+          ) : (
+            <BsFillPlayFill color='#fff' fontSize={30} />
+          )}
+        </div>
+      </div>
     </div>
   );
 };
